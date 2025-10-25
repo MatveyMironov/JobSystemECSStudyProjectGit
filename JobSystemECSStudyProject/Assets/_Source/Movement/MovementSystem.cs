@@ -1,5 +1,6 @@
 ﻿using Unity.Burst;
 using Unity.Entities;
+using UnityEngine;
 
 [BurstCompile]
 public partial struct MovementSystem : ISystem
@@ -7,8 +8,7 @@ public partial struct MovementSystem : ISystem
     [BurstCompile]
     public void OnUpdate(ref SystemState state)
     {
-        float time = (float)SystemAPI.Time.ElapsedTime;
-        var job = new MovementJob() { Time = time };
+        var job = new MovementJob() { DeltaTime = Time.deltaTime };
         job.ScheduleParallel();
     }
 }

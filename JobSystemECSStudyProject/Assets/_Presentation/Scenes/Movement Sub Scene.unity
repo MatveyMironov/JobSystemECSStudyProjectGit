@@ -149,7 +149,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   prefab: {fileID: 2993921325581440752, guid: 206fff91caecd6a478dac71ada26176f, type: 3}
-  count: 50000
+  count: 10000
+  interval: 2
+  maxY: 10
+  minY: -10
 --- !u!4 &1437054275
 Transform:
   m_ObjectHideFlags: 0

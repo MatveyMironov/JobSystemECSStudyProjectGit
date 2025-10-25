@@ -10,16 +10,16 @@ public partial struct SpawnSystem : ISystem
     public struct SpawnedTag : IComponentData { }
 
     [BurstCompile]
-    public void OnUpdate(ref SystemState state)
+    public readonly void OnUpdate(ref SystemState state)
     {
-        if (!SystemAPI.HasSingleton<SpawnerData>())
+        if (!SystemAPI.HasSingleton<SpawnerComponent>())
             return;
 
-        var spawnerEntity = SystemAPI.GetSingletonEntity<SpawnerData>();
+        var spawnerEntity = SystemAPI.GetSingletonEntity<SpawnerComponent>();
         if (state.EntityManager.HasComponent<SpawnedTag>(spawnerEntity))
             return;
         
-        var spawnerData = SystemAPI.GetSingleton<SpawnerData>();
+        var spawnerData = SystemAPI.GetSingleton<SpawnerComponent>();
         if (spawnerData.Prefab == null)
             return;
 
@@ -28,13 +28,12 @@ public partial struct SpawnSystem : ISystem
         int width = (int)math.sqrt(clones.Length);
         int column = 0;
         int row = 0;
-        float interval = 1.1f;
         for (int i = 0; i < clones.Length; i++)
         {
-            float x = column * interval;
-            float y = UnityEngine.Random.Range(-1.0f, 1.0f);
-            float z = row * interval;
-            float3 position = new(x, y, z);
+            float positionX = column * spawnerData.Interval;
+            float positionY = UnityEngine.Random.Range(spawnerData.MinY, spawnerData.MaxY);
+            float positionZ = row * spawnerData.Interval;
+            float3 position = new(positionX, positionY, positionZ);
 
             column++;
             if (column >= width)
